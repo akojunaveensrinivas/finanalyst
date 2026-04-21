@@ -191,8 +191,9 @@ export default function ExportButtons({ result, lens }: Props) {
       XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(trendRows), 'Trends')
 
       // Sheet 4: Raw Financials
-      const allFields = new Set(dates.flatMap(d => Object.keys(annual[d] ?? {})))
-      allFields.delete('currency')
+      const allFieldsSet = new Set(dates.flatMap(d => Object.keys(annual[d] ?? {})))
+      allFieldsSet.delete('currency')
+      const allFields = Array.from(allFieldsSet)
       const rawRows: (string | number | null)[][] = [['Field', ...dates]]
       for (const field of allFields) {
         rawRows.push([field, ...dates.map(d => annual[d]?.[field] ?? null)])
